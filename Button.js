@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, Text, View } from 'react-native';
+import {
+  StyleSheet, Text, View, TouchableOpacity,
+} from 'react-native';
 
 const baseContainer = {
   alignItems: 'center',
@@ -33,10 +35,13 @@ const styles = StyleSheet.create({
   },
 });
 
-const Button = ({ text, special }) => (
-  <View style={special ? styles.special : styles.container}>
+const Button = ({ text, special, onPress }) => (
+  <TouchableOpacity
+    onPress={() => onPress(text)}
+    style={special ? styles.special : styles.container}
+  >
     <Text style={special ? styles.specialText : styles.text}>{text}</Text>
-  </View>
+  </TouchableOpacity>
 );
 
 Button.defaultProps = {
@@ -46,6 +51,7 @@ Button.defaultProps = {
 Button.propTypes = {
   text: PropTypes.string.isRequired,
   special: PropTypes.bool,
+  onPress: PropTypes.func.isRequired,
 };
 
 export default Button;
