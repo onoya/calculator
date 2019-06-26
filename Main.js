@@ -1,14 +1,14 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import {
   Platform, StyleSheet, Text, TouchableOpacity, View,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import Button from './Button';
 import {
-  pressNum, enter, operation, clear, swap, toggleNegative,
+  clear, enter, operation, pressNum, swap, toggleNegative,
 } from './actions';
+import Button from './Button';
 
 const baseNumber = {
   backgroundColor: '#333',
@@ -24,9 +24,10 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    backgroundColor: '#333',
   },
   top: {
-    paddingTop: Platform.OS === 'ios' ? 32 : 24,
+    paddingTop: Platform.OS === 'ios' ? 32 : 20,
   },
   bottom: {
     flex: 1,
@@ -63,13 +64,22 @@ const Main = ({
   <View style={styles.container}>
     <View style={styles.top}>
       <TouchableOpacity style={styles.bottomBorder} onPress={() => toggleNegativeAction(2)}>
-        <Text style={styles.append}>{stack[2] || 0}</Text>
+        <Text numberOfLines={1} style={styles.append}>
+          {'  '}
+          {stack[2] || 0}
+        </Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.bottomBorder} onPress={() => toggleNegativeAction(1)}>
-        <Text style={styles.append}>{stack[1] || 0}</Text>
+        <Text numberOfLines={1} style={styles.append}>
+          {'  '}
+          {stack[1] || 0}
+        </Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => toggleNegativeAction(0)}>
-        <Text style={styles[inputState]}>{stack[0] || 0}</Text>
+        <Text numberOfLines={1} style={styles[inputState]}>
+          {'  '}
+          {stack[0] || 0}
+        </Text>
       </TouchableOpacity>
     </View>
     <View style={styles.bottom}>

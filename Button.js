@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
-import React from 'react';
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import React, { useCallback, useRef } from 'react';
+import { StyleSheet, TouchableOpacity } from 'react-native';
+import * as Animatable from 'react-native-animatable';
 
 const baseContainer = {
   alignItems: 'center',
@@ -33,14 +34,27 @@ const styles = StyleSheet.create({
   },
 });
 
-const Button = ({ text, special, onPress }) => (
-  <TouchableOpacity
-    onPress={() => onPress(text)}
-    style={special ? styles.special : styles.container}
-  >
-    <Text style={special ? styles.specialText : styles.text}>{text}</Text>
-  </TouchableOpacity>
-);
+const Button = ({ text, special, onPress }) => {
+  const textRef = useRef();
+
+  const handleTextRef = useCallback((ref) => {
+    textRef.current = ref;
+  }, []);
+
+  return (
+    <TouchableOpacity
+      onPress={() => {
+        textRef.current.rubberBand(400);
+        onPress(text);
+      }}
+      style={special ? styles.special : styles.container}
+    >
+      <Animatable.Text ref={handleTextRef} style={special ? styles.specialText : styles.text}>
+        {text}
+      </Animatable.Text>
+    </TouchableOpacity>
+  );
+};
 
 Button.defaultProps = {
   special: false,
