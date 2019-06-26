@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Button from './Button';
-import { pressNum } from './actions';
+import { pressNum, enter } from './actions';
 
 const styles = StyleSheet.create({
   container: {
@@ -34,12 +34,12 @@ const styles = StyleSheet.create({
   },
 });
 
-const Main = ({ currentNumber, pressNumber }) => (
+const Main = ({ calculatorState: { stack, inputState }, pressNumber, enterAction }) => (
   <View style={styles.container}>
     <View style={styles.top}>
-      <Text style={styles.number}>0</Text>
-      <Text style={styles.number}>0</Text>
-      <Text style={styles.number}>{currentNumber}</Text>
+      <Text style={styles.number}>{stack[2] || 0}</Text>
+      <Text style={styles.number}>{stack[1] || 0}</Text>
+      <Text style={styles.number}>{stack[0] || 0}</Text>
     </View>
     <View style={styles.bottom}>
       <View style={styles.row}>
@@ -69,24 +69,29 @@ const Main = ({ currentNumber, pressNumber }) => (
       <View style={styles.row}>
         <Button text="0" onPress={pressNumber} />
         <Button text="." />
-        <Button text="enter" special />
+        <Button text="enter" special onPress={enterAction} />
       </View>
     </View>
   </View>
 );
 
 Main.propTypes = {
-  currentNumber: PropTypes.string.isRequired,
+  calculatorState: PropTypes.shape({
+    stack: PropTypes.array.isRequired,
+    inputState: PropTypes.string.isRequired,
+  }).isRequired,
   pressNumber: PropTypes.func.isRequired,
+  enterAction: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
-  currentNumber: state,
+  calculatorState: state,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(
   {
     pressNumber: pressNum,
+    enterAction: enter,
   },
   dispatch,
 );
