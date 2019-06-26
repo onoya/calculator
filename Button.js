@@ -1,8 +1,6 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  StyleSheet, Text, View, TouchableOpacity,
-} from 'react-native';
+import React from 'react';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 
 const baseContainer = {
   alignItems: 'center',

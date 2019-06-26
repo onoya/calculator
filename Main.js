@@ -1,10 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, Text, View } from 'react-native';
+import {
+  StyleSheet, Text, TouchableOpacity, View,
+} from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Button from './Button';
-import { pressNum, enter, operation } from './actions';
+import {
+  pressNum, enter, operation, clear, swap, toggleNegative,
+} from './actions';
 
 const baseNumber = {
   backgroundColor: '#333',
@@ -50,18 +54,27 @@ const Main = ({
   pressNumber,
   enterAction,
   operationAction,
+  clearAction,
+  swapAction,
+  toggleNegativeAction,
 }) => (
   <View style={styles.container}>
     <View style={styles.top}>
-      <Text style={styles.append}>{stack[2] || 0}</Text>
-      <Text style={styles.append}>{stack[1] || 0}</Text>
-      <Text style={styles[inputState]}>{stack[0] || 0}</Text>
+      <TouchableOpacity onPress={() => toggleNegativeAction(2)}>
+        <Text style={styles.append}>{stack[2] || 0}</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => toggleNegativeAction(1)}>
+        <Text style={styles.append}>{stack[1] || 0}</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => toggleNegativeAction(0)}>
+        <Text style={styles[inputState]}>{stack[0] || 0}</Text>
+      </TouchableOpacity>
     </View>
     <View style={styles.bottom}>
       <View style={styles.row}>
-        <Button text="clear" />
+        <Button text="clear" onPress={clearAction} />
         <Button text="pow" onPress={operationAction} />
-        <Button text="swap" />
+        <Button text="swap" onPress={swapAction} />
         <Button text="/" onPress={operationAction} />
       </View>
       <View style={styles.row}>
@@ -99,6 +112,9 @@ Main.propTypes = {
   pressNumber: PropTypes.func.isRequired,
   enterAction: PropTypes.func.isRequired,
   operationAction: PropTypes.func.isRequired,
+  clearAction: PropTypes.func.isRequired,
+  swapAction: PropTypes.func.isRequired,
+  toggleNegativeAction: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -110,6 +126,9 @@ const mapDispatchToProps = dispatch => bindActionCreators(
     pressNumber: pressNum,
     enterAction: enter,
     operationAction: operation,
+    clearAction: clear,
+    swapAction: swap,
+    toggleNegativeAction: toggleNegative,
   },
   dispatch,
 );
